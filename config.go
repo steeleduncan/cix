@@ -37,7 +37,7 @@ func (rc RepositoryConfiguration) ResolvedRemote() string {
 
 func (rc RepositoryConfiguration) Identifier() string {
     h := sha256.New()
-    h.Write([]byte(rc.Remote))
+    h.Write([]byte(rc.ResolvedRemote()))
     h.Write([]byte(rc.Branch))
 	return fmt.Sprintf("%x", h.Sum(nil))
 }

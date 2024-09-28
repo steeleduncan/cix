@@ -75,7 +75,7 @@ func (c Configuration) GatherNewCommits(varFolder string) ([]Operation, error) {
 
 	for _, repo := range c.Repositories {
 		r := Repository {
-			Path: filepath.Join(varFolder, "repositories", repo.Identifier()),
+			Path: filepath.Join(varFolder, repo.Identifier()),
 		}
 		if c.Verbose {
 			fmt.Println(" Repository ", r.Path)
