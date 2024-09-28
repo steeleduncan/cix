@@ -49,6 +49,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
 [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
 [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
+[ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
 
 ## Things I would love a PR for
 
