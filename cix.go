@@ -132,15 +132,6 @@ func (c Configuration) GatherNewCommits(varFolder string) ([]Operation, error) {
 			}
 			ops = append(ops, op)
 		}
-
-		op := Operation {
-			Repo: r,
-			Hash: "e230319a5d9c8b96d445fc863b5084d9b9493c3b",
-		}
-		if repo.Github.Valid() {
-			op.Receiver = repo.Github
-		}
-		ops = append(ops, op)
 	}
 
 	return ops, nil
