@@ -33,6 +33,8 @@ The `statuspat` is optional, but it is required if you want to push the statuses
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
+This was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simple-ci)
+
 ## Things Cix does
 
 - Watches a repository
