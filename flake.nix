@@ -18,11 +18,12 @@
             buildPhase = ''
               mkdir -p junk
               export HOME=$(pwd)/junk
-              go build -o cix cowleyforniastudios.com/cix
+              go build -o cix github.com/steeleduncan/cix
             '';
 
             installPhase = ''
-              mkdir -p $out
+              mkdir -p $out/bin
+              mv cix $out/bin/
             '';
           };
       };

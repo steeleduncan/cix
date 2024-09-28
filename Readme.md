@@ -7,7 +7,7 @@ It watches your repositories, runs any tests specified in `nix flake check`, and
 
 It is small, easy to setup (one static binary, and one json configuration file) but hopefully it is useful.
 
-It is very early days, but if you wish to install it, clone this repository, type `go build` to create the `cix` binary, and then run it passing a single argument to a configuration file. The configuration should be a json similar to the following
+It is very early days, but if you wish to try it, create a `config.json` like below, and run `nix run github:steeleduncan/cix -- path/to/config.json`
 
 ```
 {
