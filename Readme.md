@@ -70,6 +70,13 @@ These are things I'd love to see in Cix, but that I am unlikely to need, and thu
 [ ] **Non-flake checks** Personally, I only ever use flakes with nix, but there are non-flake approaches I am not familiar with
 [ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
 
+## Alternatives
+
+Depending on your needs the following might be useful
+
+- **Hydra** The classic Nix CI, full featured, and probably what you are looking for if you have demanding requirements, and the time to maintain it
+- **[github-nix-ci](https://github.com/juspay/github-nix-ci)** Run your own Github Actions self hosted runners on NixOS to use the GHA UI and your own hardware
+
 ## Licence
 
 Copyright 2024 Duncan Steele
