@@ -25,6 +25,9 @@ It is very early days, but if you wish to try it, create a `config.json` like be
 }
 ```
 
+The `statuspat` is optional, but it is required if you want to push the statuses to Github. When generating it, please generate something with Read/Write permissions on Commit Statuses only. Cix doesn't do anything other than push a commit status
+
+Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
 ## Things Cix does
 
@@ -53,10 +56,11 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 
 ## Things I would love a PR for
 
-These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself
+These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself, but I'd gladly accept PRs for these
 
-[ ] **Other code forges** I only have projects on Github and Bitbucket, but i'd gladly accept PRs for these
-[ ] **Non-flake checks** Personally, I only ever use flakes with nix, but if anyone uses cix for non-flake checks, please let me know how
+[ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
+[ ] **Non-flake checks** Personally, I only ever use flakes with nix, but there are non-flake approaches I am not familiar with
+[ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
 
 ## Licence
 
