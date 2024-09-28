@@ -1,0 +1,65 @@
+/*
+   config.go - Configuration of Cix
+
+   Copyright 2024 Duncan Steele
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package main
+
+import (
+	"fmt"
+	"crypto/sha256"
+)
+
+type RepositoryConfiguration struct {
+	// The git repository URL
+	Remote string
+
+	// (optional) GH config block
+	Github *GithubConfiguration
+
+	// The branch to check
+	Branch string
+}
+
+func (rc RepositoryConfiguration) ResolvedRemote() string {
+	if rc.Github.Valid() {
+		return fmt.Sprintf("git@github.com:%v/%v", rc.Github.User, rc.Github.Repository)
+	}
+
+	return rc.Remote
+}
+
+func (rc RepositoryConfiguration) Identifier() string {
+    h := sha256.New()
+    h.Write([]byte(rc.Remote))
+    h.Write([]byte(rc.Branch))
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+type Configuration struct {
+	// Path to our data folder
+	Var string
+
+	// A name for this runner
+	Name string
+
+	// When true we print a lot
+	Verbose bool
+
+	// various git repos
+	Repositories []RepositoryConfiguration
+}
+
+func (rc Configuration) ResolvedName() string {
+	if rc.Name == "" {
+		return "Cix"
+	}
+
+	return fmt.Sprintf("%v (Cix)", rc.Name)
+}
