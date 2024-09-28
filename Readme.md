@@ -32,6 +32,8 @@ It is very early days, but if you wish to try it, create a `config.json` like be
 - Runs tests with `nix flake check`
 - Pushes a commit status to Github so you can see if the tests are running, passed or failed
 
+Cix will run tests for every commit, not just the latest commit pushed. However it won't run tests for commits before it was activated
+
 ## Things Cix won't do
 
 I'm doing my best to lean on nix in any way possible keep Cix simple so these are not, and will not be, supported
