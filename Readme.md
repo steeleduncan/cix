@@ -1,11 +1,11 @@
 **🚧Please note that Cix is very new. I use it for my own projects, but take care using it for yours!🚧**
 
-# Cix - a minimal CI for nix
+# Cix - A minimal CI for nix
 
 Cix is a project to make a minimal useful CI for use with nix.
 It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your forge.
 
-It is small, easy to setup (one static binary, and one json configuration file) but hopefully it is useful.
+It is small, easy to setup (one static binary, and one json configuration file), but it should be useful to those (like me) who are daunted by the work needed to setup hydra, but would like tests run and reported for personal projects.
 
 It is very early days, but if you wish to try it, create a `config.json` like below, and run `nix run github:steeleduncan/cix -- path/to/config.json`
 
