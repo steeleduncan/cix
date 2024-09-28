@@ -37,9 +37,10 @@ This was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simpl
 
 ## Things Cix does
 
-- Watches a repository
-- Runs tests with `nix flake check`
-- Pushes a commit status to Github so you can see if the tests are running, passed or failed
+- **Watches repositories**
+- **Runs tests** with `nix flake check`
+- **Pushes a commit status to Github** so you can see if the tests are running, passed or failed
+- **Catches up** Cix doesn't need to be online when the commit is made, so if you only have your machine on part the time, when it first checks it will enumerate and test all commits made since it was last on
 
 Cix will run tests for every commit, not just the latest commit pushed. However it won't run tests for commits before it was activated
 
