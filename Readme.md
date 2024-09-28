@@ -59,6 +59,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
 [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
 [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
+[ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
 
 ## Things I would love a PR for
 
