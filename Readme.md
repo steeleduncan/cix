@@ -1,11 +1,11 @@
 **🚧Please note that Cix is very new. I use it for my own projects, but take care using it for yours!🚧**
 
-# Cix - a minimal CI for nix
+# Cix - A minimal CI for nix
 
-Cix is intended to be the minimal useful CI for use with nix.
-It watches your repositories, runs any tests specified in `nix flake check`, and reports the status back to your forge.
+Cix is a project to make a minimal useful CI for use with nix.
+It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your forge.
 
-It is small, easy to setup (one static binary, and one json configuration file) but hopefully it is useful.
+It is small, easy to setup (one static binary, and one json configuration file), but it should be useful to those (like me) who are daunted by the work needed to setup hydra, but would like tests run and reported for personal projects.
 
 It is very early days, but if you wish to try it, create a `config.json` like below, and run `nix run github:steeleduncan/cix -- path/to/config.json`
 
@@ -30,28 +30,32 @@ It is very early days, but if you wish to try it, create a `config.json` like be
 
 - Watches a repository
 - Runs tests with `nix flake check`
-- Pushes a commit status to Github so you can see if the test are in progress, passed or failed
+- Pushes a commit status to Github so you can see if the tests are running, passed or failed
+
+Cix will run tests for every commit, not just the latest commit pushed. However it won't run tests for commits before it was activated
 
 ## Things Cix won't do
 
 I'm doing my best to lean on nix in any way possible keep Cix simple so these are not, and will not be, supported
 
-- Store logs or artefacts: Nix is reproducible, you can generate these locally, or get them from a shared binary cache
-- Have a web front end: Your code forge is used as the front end of cix, it will push statuses there
+- **Store logs or artefacts** Nix is reproducible, you can generate these locally, or get them from a shared binary cache
+- **Serve a web front end** Your code forge is used as the front end of cix, it will push statuses there
+
+If you are looking for a fuller featured CI, I urge you to take a look at Hydra. It is tougher to setup, but it does everything you are likely to need.
 
 ## Roadmap - things I want to add to Cix
 
-[ ] Bitbucket support
-[ ] Success actions: essentially a `nix run` that is called on succeeding tests. This could be used for deploys
-[ ] Non-status notifiers: Discord, email, some shell script. Any of these would be useful
-[ ] Binary cache option: Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
+[ ] **Bitbucket support**
+[ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
+[ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
+[ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
 
 ## Things I would love a PR for
 
 These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself
 
-[ ] Other code forges: I only have projects on Github and Bitbucket, but i'd gladly accept PRs for these
-[ ] Non-flake checks: Personally, I only ever use flakes with nix, but if anyone uses cix for non-flake checks, please let me know how
+[ ] **Other code forges** I only have projects on Github and Bitbucket, but i'd gladly accept PRs for these
+[ ] **Non-flake checks** Personally, I only ever use flakes with nix, but if anyone uses cix for non-flake checks, please let me know how
 
 ## Licence
 
