@@ -4,12 +4,11 @@
 
 Cix is a project to make a minimal useful CI for use with nix.
 It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your forge.
-
 It is small, easy to setup (one static binary, and one json configuration file), but it should be useful to those (like me) who are daunted by the work needed to setup Hydra, but would like tests run and reported for personal projects.
 
-Please note that this is not, and never will be, a replacement for Hydra.
-It is vastly easier to setup than Hydra, especially on non-NixOS machines, and will serve many people's needs.
-However Hydra is much more featured than Cix, presents its own Web UI, maintains artefact & log stores, and supports clustering build machines, none of which are planned for Cix.
+A lot of simplicity is found by not storing logs and artefacts.
+However git is reproducible, and the command to reproduce the results is attached to the status tick, so you can find those results locally.
+If you are setup to share a binary cache with the runner, you will share its results without needing to recalculate.
 
 It is very early days, but if you wish to try it, create a `config.json` like below, and run `nix run github:steeleduncan/cix -- path/to/config.json`
 
@@ -30,6 +29,11 @@ It is very early days, but if you wish to try it, create a `config.json` like be
 ```
 
 The `statuspat` is optional, but it is required if you want to push the statuses to Github. When generating it, please generate something with Read/Write permissions on Commit Statuses only. Cix doesn't do anything other than push a commit status
+
+
+Please note that this is not, and never will be, a replacement for Hydra.
+It is vastly easier to setup than Hydra, especially on non-NixOS machines, and will serve many people's needs.
+However Hydra is much more featured than Cix, presents its own Web UI, maintains artefact & log stores, and supports clustering build machines, none of which are planned for Cix.
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
