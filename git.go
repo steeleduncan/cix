@@ -1,24 +1,24 @@
 /*
-   git.go - Git tools for cix
+	git.go - Git tools for cix
 
-   Copyright 2024 Duncan Steele
+	Copyright 2024 Duncan Steele
 
-   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+	THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 package main
 
 import (
-	"os"
-	"io"
-	"fmt"
 	"errors"
-	"strings"
+	"fmt"
+	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 // Check if a commit is (likely) valid
@@ -51,7 +51,7 @@ func (r Repository) Exists() bool {
 func (r Repository) CheckoutTo(path, branch string) error {
 	cmd := exec.Command("git", "checkout", branch, ".")
 	cmd.Dir = r.Path
-	cmd.Env = []string { fmt.Sprintf("GIT_WORK_TREE=%v", path) }
+	cmd.Env = []string{fmt.Sprintf("GIT_WORK_TREE=%v", path)}
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("Checkout failed for %v / %v", r.Path, branch)
 	}
@@ -78,7 +78,7 @@ func (r Repository) ListCommits(branch string) (map[string]bool, error) {
 		return nil, fmt.Errorf("Failed running git command to list commits")
 	}
 
-	ret := map[string]bool {}
+	ret := map[string]bool{}
 	hashes := strings.Split(string(slurp), "\n")
 	for _, hash := range hashes {
 		if hash == "" {
@@ -95,7 +95,7 @@ func (r Repository) ListCommits(branch string) (map[string]bool, error) {
 
 // Fetch all new commits
 func (r Repository) Fetch(branch string) error {
-	cmd := exec.Command("git", "fetch", "origin", branch + ":" + branch)
+	cmd := exec.Command("git", "fetch", "origin", branch+":"+branch)
 	cmd.Dir = r.Path
 
 	if err := cmd.Run(); err != nil {
@@ -111,7 +111,7 @@ func (r Repository) Clone(remote, branch string) error {
 	name := filepath.Base(r.Path)
 	parent := filepath.Dir(r.Path)
 	os.MkdirAll(parent, 0777)
-	
+
 	cmd := exec.Command("git", "clone", "--bare", "-b", branch, remote, name)
 	cmd.Dir = parent
 	so, err := cmd.StderrPipe()
