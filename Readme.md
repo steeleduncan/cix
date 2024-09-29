@@ -1,16 +1,16 @@
 **🚧Please note that Cix is very new. I use it for my own projects, but take care using it for yours!🚧**
 
-# Cix - A minimal CI for nix
+# Cix - A minimal CI for Nix
 
-Cix is a project to make a minimal useful CI for use with nix.
+Cix is a project to make a minimal useful CI for use with Nix.
 It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your forge.
 It is small, easy to setup (one static binary, and one json configuration file), but it should be useful to those (like me) who are daunted by the work needed to setup Hydra, but would like tests run and reported for personal projects.
 
-A lot of simplicity is found by not storing logs and artefacts.
-However git is reproducible, and the command to reproduce the results is attached to the status tick, so you can find those results locally.
-If you are setup to share a binary cache with the runner, you will share its results without needing to recalculate.
+A lot of simplicity is found by not storing logs and artefacts, and relying on Nix's reproducibility instead.
+The Nix command to reproduce the results is attached to the status tick.
+If you share a binary cache with the runner, you will share its results without needing to calculate them.
 
-It is very early days, but if you wish to try it, create a `config.json` similar to the following and run `nix run github:steeleduncan/cix -- config.json`
+It is early days for Cix, but if you wish to try it, create a `config.json` similar to the following and run `nix run github:steeleduncan/cix -- config.json`
 
 ```
 {
@@ -28,7 +28,9 @@ It is very early days, but if you wish to try it, create a `config.json` similar
 }
 ```
 
-The `statuspat` is technically optional, but it is the only way to view the results by pushing statuses back to github. When generating it, please generate a token with Read/Write permissions on Commit Statuses only. Cix doesn't do anything other than push a commit status, and it is safest not grant any permissions it would not need.
+The `statuspat` is technically optional, but the status tick in Github is currently the only way to view the results.
+When generating the token, please allow only Read/Write permissions on Commit Statuses.
+Cix doesn't do anything other than push a commit status, and it is safest not grant any permissions it would not need.
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
@@ -49,7 +51,8 @@ Cix will run tests for every commit, not just the latest commit pushed. However 
 
 ## Things Cix won't do
 
-I'm doing my best to lean on nix in any way possible keep Cix simple so these are not, and will not be, supported
+Nix and your code forge have almost everything needed for a useful CI system, so with Cix I am doing my best to keep it minimal and rely on Nix wherever possible
+The features below are not, and will not be, supported
 
 - **Store logs or artefacts** Nix is reproducible, you can generate these locally, or get them from a shared binary cache
 - **Serve a web front end** Your code forge is used as the front end of cix, it will push statuses there
@@ -61,7 +64,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Bitbucket support**
 [ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
 [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
-[ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
+[ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
 [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
 [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
 [ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
@@ -71,7 +74,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself, but I'd gladly accept PRs for these
 
 [ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
-[ ] **Non-flake checks** Personally, I only ever use flakes with nix, but there are non-flake approaches I am not familiar with
+[ ] **Non-flake checks** Personally, I only ever use flakes with Nix, but there are non-flake approaches I am not familiar with
 [ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
 
 ## Alternatives
