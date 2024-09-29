@@ -23,7 +23,15 @@ type GithubConfiguration struct {
 	Repository string
 	StatusPat string
 }
-var _ Notifier = &GithubConfiguration {}
+var _ RepoSource = &GithubConfiguration {}
+
+func (gc *GithubConfiguration) NixUrl(revision string) string {
+	return fmt.Sprintf("git+ssh://git@github.com:%v/%v?rev=%v", gc.User, gc.Repository, gc.StatusPat)
+}
+
+func (gc *GithubConfiguration) GitUrl() string {
+	return fmt.Sprintf("git@github.com:%v/%v", gc.User, gc.Repository)
+}
 
 func (gc *GithubConfiguration) Valid() bool {
 	if gc == nil {

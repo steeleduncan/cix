@@ -24,12 +24,15 @@ const (
 	KSucceeded
 )
 
-type Notifier interface {
+type RepoSource interface {
+	Valid() bool
 	SetStatus(status CiStatus, comment, hash string) error
+	NixUrl(revision string) string
+	GitUrl() string
 }
 
 type Operation struct {
-	Receiver Notifier
+	Receiver RepoSource
 
 	// Repository path
 	Repo Repository
@@ -81,11 +84,13 @@ func (c Configuration) GatherNewCommits(varFolder string) ([]Operation, error) {
 			fmt.Println(" Repository ", r.Path)
 		}
 
+		source := repo.Source()
+
 		if !r.Exists() {
 			if c.Verbose {
-				fmt.Println("  Clone ", repo.ResolvedRemote(), repo.Branch)
+				fmt.Println("  Clone ", source.GitUrl(), repo.Branch)
 			}
-			if err := r.Clone(repo.ResolvedRemote(), repo.Branch); err != nil {
+			if err := r.Clone(source.GitUrl(), repo.Branch); err != nil {
 				return nil, err
 			}
 		}
@@ -137,8 +142,22 @@ func (c Configuration) GatherNewCommits(varFolder string) ([]Operation, error) {
 	return ops, nil
 }
 
+func (c Configuration) Validate() error {
+	for i, repo := range c.Repositories {
+		if repo.Source() == nil {
+			return fmt.Errorf("Invalid configuration: missing repository source (%v)", i)
+		}
+	}
+	return nil
+}
+
 func (c Configuration) Tick() error {
+	if err := c.Validate(); err != nil {
+		return err
+	}
+
 	varFolder := filepath.Join(c.Var, "v1")
+
 
 	ops, err := c.GatherNewCommits(varFolder)
 	if err != nil {

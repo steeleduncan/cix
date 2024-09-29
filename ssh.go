@@ -1,5 +1,5 @@
 /*
-   config.go - Configuration of Cix
+   ssh.go - Ssh configuration for Cix
 
    Copyright 2024 Duncan Steele
 
@@ -13,57 +13,31 @@ package main
 
 import (
 	"fmt"
-	"crypto/sha256"
 )
 
-type RepositoryConfiguration struct {
-	// (optional) GH config block
-	Github *GithubConfiguration
+type SshConfiguration struct {
+	// The git repository URL
+	Remote string
+}
+var _ RepoSource = &GithubConfiguration {}
 
-	// (optional) Ssh config block
-	Ssh *SshConfiguration
+func (sc *SshConfiguration) Valid() bool {
+	if sc == nil {
+		return false
+	}
 
-	// The branch to check
-	Branch string
+	return sc.Remote != ""
 }
 
-func (rc RepositoryConfiguration) Source() RepoSource {
-	if rc.Github.Valid() {
-		return rc.Github
-	}
-
-	if rc.Ssh.Valid() {
-		return rc.Ssh
-	}
-
+func (sc *SshConfiguration) SetStatus(status CiStatus, comment, hash string) error {
+	// nothing we can do here
 	return nil
 }
 
-func (rc RepositoryConfiguration) Identifier() string {
-    h := sha256.New()
-    h.Write([]byte(rc.Source().GitUrl()))
-    h.Write([]byte(rc.Branch))
-	return fmt.Sprintf("%x", h.Sum(nil))
+func (sc *SshConfiguration) NixUrl(revision string) string {
+	return fmt.Sprintf("git+ssh://%v?rev=%v", sc.Remote, revision)
 }
 
-type Configuration struct {
-	// Path to our data folder
-	Var string
-
-	// A name for this runner
-	Name string
-
-	// When true we print a lot
-	Verbose bool
-
-	// various git repos
-	Repositories []RepositoryConfiguration
-}
-
-func (rc Configuration) ResolvedName() string {
-	if rc.Name == "" {
-		return "Cix"
-	}
-
-	return fmt.Sprintf("%v (Cix)", rc.Name)
+func (sc *SshConfiguration) GitUrl() string {
+	return sc.Remote
 }
