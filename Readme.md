@@ -4,7 +4,6 @@
 
 Cix is a project to make a minimal useful CI for use with nix.
 It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your forge.
-
 It is small, easy to setup (one static binary, and one json configuration file), but it should be useful to those (like me) who are daunted by the work needed to setup Hydra, but would like tests run and reported for personal projects.
 
 Please note that this is not, and never will be, a replacement for Hydra.
