@@ -65,6 +65,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
 [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
 [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
+[ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
 
 ## Things I would love a PR for
 
