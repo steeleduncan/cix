@@ -33,11 +33,14 @@ The `statuspat` is optional, but it is required if you want to push the statuses
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
+This was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simple-ci)
+
 ## Things Cix does
 
-- Watches a repository
-- Runs tests with `nix flake check`
-- Pushes a commit status to Github so you can see if the tests are running, passed or failed
+- **Watches repositories**
+- **Runs tests** with `nix flake check`
+- **Pushes a commit status to Github** so you can see if the tests are running, passed or failed
+- **Catches up** Cix doesn't need to be online when the commit is made, so if you only have your machine on part the time, when it first checks it will enumerate and test all commits made since it was last on
 
 Cix will run tests for every commit, not just the latest commit pushed. However it won't run tests for commits before it was activated
 
@@ -57,6 +60,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
 [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
 [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
+[ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
 
 ## Things I would love a PR for
 
@@ -65,6 +69,13 @@ These are things I'd love to see in Cix, but that I am unlikely to need, and thu
 [ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
 [ ] **Non-flake checks** Personally, I only ever use flakes with nix, but there are non-flake approaches I am not familiar with
 [ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
+
+## Alternatives
+
+Depending on your needs the following might be useful
+
+- **Hydra** The classic Nix CI, full featured, and probably what you are looking for if you have demanding requirements, and the time to maintain it
+- **[github-nix-ci](https://github.com/juspay/github-nix-ci)** Run your own Github Actions self hosted runners on NixOS to use the GHA UI and your own hardware
 
 ## Licence
 
