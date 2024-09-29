@@ -29,7 +29,7 @@ func (sc *SshConfiguration) Valid() bool {
 	return sc.Remote != ""
 }
 
-func (sc *SshConfiguration) SetStatus(status CiStatus, comment, hash string) error {
+func (sc *SshConfiguration) SetStatus(status CiStatus, comment, description, hash string) error {
 	// nothing we can do here
 	return nil
 }

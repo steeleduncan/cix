@@ -18,8 +18,13 @@ import (
 	"os/exec"
 )
 
-func RunChecks(repoPath, ref string) (bool, error) {
-	cmd := exec.Command("nix", "flake", "check", "-L", "git+file://" + repoPath + "?rev=" + ref)
+func GetDescription(revision string, src RepoSource) string {
+	return "nix flake check -L " + src.NixUrl(revision)
+}
+
+func RunChecks(repoPath, revision string) (bool, error) {
+	// NB we use our local copy for efficiency, but we need the nix url for returning to the user
+	cmd := exec.Command("nix", "flake", "check", "-L", "git+file://" + repoPath + "?rev=" + revision)
 	cmd.Dir = "/tmp"
 	so, err := cmd.StderrPipe()
 	if err != nil {

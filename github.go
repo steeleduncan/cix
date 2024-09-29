@@ -26,7 +26,7 @@ type GithubConfiguration struct {
 var _ RepoSource = &GithubConfiguration {}
 
 func (gc *GithubConfiguration) NixUrl(revision string) string {
-	return fmt.Sprintf("git+ssh://git@github.com:%v/%v?rev=%v", gc.User, gc.Repository, gc.StatusPat)
+	return fmt.Sprintf("github:%v/%v?rev=%v", gc.User, gc.Repository, revision)
 }
 
 func (gc *GithubConfiguration) GitUrl() string {
@@ -41,7 +41,7 @@ func (gc *GithubConfiguration) Valid() bool {
 	return gc.User != "" && gc.Repository != ""
 }
 
-func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, hash string) error {
+func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, description, hash string) error {
 	if gc.StatusPat == "" {
 		return nil
 	}
@@ -62,7 +62,12 @@ func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, hash string) 
 		st = "success"
 	}
 
-	body := []byte(fmt.Sprintf(`{"state":"%v","context":"%v"}`, st, comment))
+	if len(description) > 140 {
+		description = description[:136] + "..."
+	}
+
+	// our descriptions are too long, so we ignore them
+	body := []byte(fmt.Sprintf(`{"state":"%v","context":"%v", "description": "%v"}`, st, comment, description))
 
 	r, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
@@ -78,7 +83,16 @@ func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, hash string) 
 		return fmt.Errorf("Error posting github status: %v", err)
 	}
 
-	_, _ = io.ReadAll(res.Body)
+	body, _ = io.ReadAll(res.Body)
+
 	res.Body.Close()
+	switch res.StatusCode {
+	case 200, 201:
+		// ok
+		
+	default:
+		fmt.Println(res.StatusCode)
+		fmt.Println(string(body))
+	}
 	return nil
 }

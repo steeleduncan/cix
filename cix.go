@@ -26,13 +26,13 @@ const (
 
 type RepoSource interface {
 	Valid() bool
-	SetStatus(status CiStatus, comment, hash string) error
+	SetStatus(status CiStatus, comment, description, hash string) error
 	NixUrl(revision string) string
 	GitUrl() string
 }
 
 type Operation struct {
-	Receiver RepoSource
+	Source RepoSource
 
 	// Repository path
 	Repo Repository
@@ -42,25 +42,27 @@ type Operation struct {
 }
 
 func (op Operation) Execute(name string) error {
-	if op.Receiver != nil {
-		op.Receiver.SetStatus(KInProgress, name, op.Hash)
+	description := GetDescription(op.Hash, op.Source)
+
+	if op.Source != nil {
+		op.Source.SetStatus(KInProgress, name, "", op.Hash)
 	}
 	ok, err := RunChecks(op.Repo.Path, op.Hash)
 	if err != nil {
-		if op.Receiver != nil {
-			op.Receiver.SetStatus(KError, name, op.Hash)
+		if op.Source != nil {
+			op.Source.SetStatus(KError, name, description, op.Hash)
 		}
 		return err
 	}
 
 	if ok {
-		if op.Receiver != nil {
-			op.Receiver.SetStatus(KSucceeded, name, op.Hash)
+		if op.Source != nil {
+			op.Source.SetStatus(KSucceeded, name, description, op.Hash)
 		}
 		fmt.Println("Passed!")
 	} else {
-		if op.Receiver != nil {
-			op.Receiver.SetStatus(KFailed, name, op.Hash)
+		if op.Source != nil {
+			op.Source.SetStatus(KFailed, name, description, op.Hash)
 		}
 		fmt.Println("Failed!")
 	}
@@ -130,10 +132,10 @@ func (c Configuration) GatherNewCommits(varFolder string) ([]Operation, error) {
 			op := Operation {
 				Repo: r,
 				Hash: hash,
-				Receiver: nil,
+				Source: nil,
 			}
 			if repo.Github.Valid() {
-				op.Receiver = repo.Github
+				op.Source = repo.Github
 			}
 			ops = append(ops, op)
 		}
