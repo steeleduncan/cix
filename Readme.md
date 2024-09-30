@@ -35,7 +35,7 @@ Cix doesn't do anything other than push a commit status, and it is safest not gr
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 
 Please note that this is not, and never will be, a replacement for Hydra.
-It is simpler to setup than Hydra, especially on non-NixOS machines, and will serve many people's needs.
+Cix is simpler to setup than Hydra, especially on non-NixOS machines, and it will serve many people's needs.
 However Hydra is much more featured than Cix, presents its own Web UI, maintains artefact & log stores, and supports clustering build machines, none of which are planned for Cix.
 
 Cix was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simple-ci)
