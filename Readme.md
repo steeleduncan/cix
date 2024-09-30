@@ -68,6 +68,7 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
 [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
 [ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
+[ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
 
 ## Things I would love a PR for
 
