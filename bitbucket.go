@@ -1,5 +1,5 @@
 /*
-github.go - Github tools for Cix
+bitbucket.go - Bitbucket tools for Cix
 
 # Copyright 2024 Duncan Steele
 
@@ -18,65 +18,69 @@ import (
 	"net/http"
 )
 
-type GithubConfiguration struct {
-	User       string
+type BitbucketConfiguration struct {
+	Workspace  string
 	Repository string
-	StatusPat  string
+	Token      string
 }
 
-var _ RepoSource = &GithubConfiguration{}
+var _ RepoSource = &BitbucketConfiguration{}
 
-func (gc *GithubConfiguration) NixUrl(revision string) string {
-	return fmt.Sprintf("github:%v/%v?rev=%v", gc.User, gc.Repository, revision)
+func (bc *BitbucketConfiguration) NixUrl(revision string) string {
+	return fmt.Sprintf("git+ssh://git@bitbucket.org:%v/%v?rev=%v", bc.Workspace, bc.Repository, revision)
 }
 
-func (gc *GithubConfiguration) GitUrl() string {
-	return fmt.Sprintf("git@github.com:%v/%v", gc.User, gc.Repository)
+func (bc *BitbucketConfiguration) GitUrl() string {
+	return fmt.Sprintf("git@bitbucket.org:%v/%v", bc.Workspace, bc.Repository)
 }
 
-func (gc *GithubConfiguration) Valid() bool {
-	if gc == nil {
+func (bc *BitbucketConfiguration) Valid() bool {
+	if bc == nil {
 		return false
 	}
 
-	return gc.User != "" && gc.Repository != ""
+	return bc.Workspace != "" && bc.Repository != ""
 }
 
-func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, description, hash string) error {
-	if gc.StatusPat == "" {
+func (bc *BitbucketConfiguration) SetStatus(status CiStatus, comment, description, hash string) error {
+	if bc.Token == "" {
 		return nil
 	}
-	url := fmt.Sprintf("https://api.github.com/repos/%v/%v/statuses/%v", gc.User, gc.Repository, hash)
+
+	method := "PUT"
 
 	st := "error"
+	optionalKey := comment
 	switch status {
 	case KError:
-		st = "error"
+		st = "STOPPED"
 
 	case KInProgress:
-		st = "pending"
+		method = "POST"
+		st = "INPROGRESS"
+		optionalKey = ""
 
 	case KFailed:
-		st = "failure"
+		st = "FAILED"
 
 	case KSucceeded:
-		st = "success"
+		st = "SUCCESSFUL"
 	}
 
-	if len(description) > 140 {
-		description = description[:136] + "..."
-	}
+	url := fmt.Sprintf("https://api.bitbucket.org/2.0/repositories/%v/%v/commit/%v/statuses/build/%v", bc.Workspace, bc.Repository, hash, optionalKey)
+
+	oururl := fmt.Sprintf("https://bitbucket.org/%v/%v", bc.Workspace, bc.Repository)
 
 	// our descriptions are too long, so we ignore them
-	body := []byte(fmt.Sprintf(`{"state":"%v","context":"%v", "description": "%v"}`, st, comment, description))
+	body := []byte(fmt.Sprintf(`{"key":"%v", "state":"%v", "description": "%v", "url": "%v"}`, comment, st, description, oururl))
 
-	r, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	r, err := http.NewRequest(method, url, bytes.NewBuffer(body))
 	if err != nil {
 		return fmt.Errorf("Failed to start post: %v", err)
 	}
-	r.Header.Add("Accept", "application/vnd.github+json")
-	r.Header.Add("X-GitHub-Api-Version", "2022-11-28")
-	r.Header.Add("Authorization", fmt.Sprintf("Bearer %v", gc.StatusPat))
+	r.Header.Add("Accept", "application/json")
+	r.Header.Add("Content-Type", "application/json")
+	r.Header.Add("Authorization", fmt.Sprintf("Bearer %v", bc.Token))
 
 	client := &http.Client{}
 	res, err := client.Do(r)
@@ -87,6 +91,7 @@ func (gc *GithubConfiguration) SetStatus(status CiStatus, comment, description, 
 	body, _ = io.ReadAll(res.Body)
 
 	res.Body.Close()
+
 	switch res.StatusCode {
 	case 200, 201:
 		// ok
