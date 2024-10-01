@@ -1,4 +1,4 @@
-**🚧Please note that Cix is very new. I use it for my own projects, but take care using it for yours!🚧**
+**🚧 Cix is very new. I use it for my own projects, but take care using it for yours! 🚧**
 
 # Cix - A minimal CI for Nix
 
