@@ -1,4 +1,4 @@
-**🚧Please note that Cix is very new. I use it for my own projects, but take care using it for yours!🚧**
+**🚧 Cix is very new. I use it for my own projects, but take care using it for yours! 🚧**
 
 # Cix - A minimal CI for Nix
 
@@ -61,22 +61,21 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 
 ## Roadmap - things I want to add to Cix
 
-[ ] **Bitbucket support**
-[ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
-[ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
-[ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
-[ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
-[ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
-[ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
-[ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
+- [ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
+- [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
+- [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
+- [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
+- [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
+- [ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
+- [ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
 
 ## Things I would love a PR for
 
 These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself, but I'd gladly accept PRs for these
 
-[ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
-[ ] **Non-flake checks** Personally, I only ever use flakes with Nix, but there are non-flake approaches I am not familiar with
-[ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
+- [ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
+- [ ] **Non-flake checks** Personally, I only ever use flakes with Nix, but there are non-flake approaches I am not familiar with
+- [ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
 
 ## Alternatives
 
@@ -84,6 +83,26 @@ Depending on your needs the following might be useful
 
 - **Hydra** The classic Nix CI, full featured, and probably what you are looking for if you have demanding requirements, and the time to maintain it
 - **[github-nix-ci](https://github.com/juspay/github-nix-ci)** Run your own Github Actions self hosted runners on NixOS to use the GHA UI and your own hardware
+
+## `Config.json` format
+
+- `var` (required) A path to a work folder where cix may store copies of the repositories
+- `name` (optional) A name for this runner, reported in the comment on code forge commit
+- `repositories` (required) A list of repositories
+    - `branch` (required) The branch to test
+    - `github` (optional)
+        - `user` (required) User name on Github
+        - `repository` (required) Repository name for that users account
+        - `statuspat` (optional) A pat with commit status read/write
+    - `bitbucket` (optional)
+        - `workspace` (required) The Bitbucket workspace name
+        - `repository` (required) The Bitbucket repository slug
+        - `token` (optional) A token with repository write permissions
+    - `ssh` (optional)
+        - `remote` (required) An ssh git url to pull commits from
+
+Although `github`, `bitbucket`, `ssh` fields are all optional, you must have at least one per repository specified.
+If more than one is specified the outcome is undefined.
 
 ## Licence
 
