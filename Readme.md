@@ -61,22 +61,22 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 
 ## Roadmap - things I want to add to Cix
 
-[ ] **Bitbucket support**
-[ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
-[ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
-[ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
-[ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
-[ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
-[ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
-[ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
+- [ ] **Bitbucket support**
+- [ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
+- [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
+- [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
+- [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
+- [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
+- [ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
+- [ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
 
 ## Things I would love a PR for
 
 These are things I'd love to see in Cix, but that I am unlikely to need, and thus do myself, but I'd gladly accept PRs for these
 
-[ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
-[ ] **Non-flake checks** Personally, I only ever use flakes with Nix, but there are non-flake approaches I am not familiar with
-[ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
+- [ ] **Other code forges** I only have projects on Github and Bitbucket, but htere are many other code forges it would be great if Cix supported
+- [ ] **Non-flake checks** Personally, I only ever use flakes with Nix, but there are non-flake approaches I am not familiar with
+- [ ] **Non-SSH access** Currently Cix uses the git binary and any SSH credentials available to it to pull commits. There are other approaches, and it would be useful to include these
 
 ## Alternatives
 
