@@ -85,6 +85,26 @@ Depending on your needs the following might be useful
 - **Hydra** The classic Nix CI, full featured, and probably what you are looking for if you have demanding requirements, and the time to maintain it
 - **[github-nix-ci](https://github.com/juspay/github-nix-ci)** Run your own Github Actions self hosted runners on NixOS to use the GHA UI and your own hardware
 
+## `Config.json` format
+
+- `var` (required) A path to a work folder where cix may store copies of the repositories
+- `name` (optional) A name for this runner, reported in the comment on code forge commit
+- `repositories` (required) A list of repositories
+    - `branch` (required) The branch to test
+    - `github` (optional)
+        - `user` (required) User name on Github
+        - `repository` (required) Repository name for that users account
+        - `statuspat` (optional) A pat with commit status read/write
+    - `bitbucket` (optional)
+        - `workspace` (required) The Bitbucket workspace name
+        - `repository` (required) The Bitbucket repository slug
+        - `token` (optional) A token with repository write permissions
+    - `ssh` (optional)
+        - `remote` (required) An ssh git url to pull commits from
+
+Although `github`, `bitbucket`, `ssh` fields are all optional, you must have at least one per repository specified.
+If more than one is specified the outcome is undefined.
+
 ## Licence
 
 Copyright 2024 Duncan Steele
