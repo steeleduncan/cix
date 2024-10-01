@@ -31,7 +31,7 @@ func RunChecks(repoPath, revision string) (bool, error) {
 	}
 
 	if err := cmd.Start(); err != nil {
-		return false, fmt.Errorf("Failed to run nix check")
+		return false, fmt.Errorf("Failed to run nix check: %v", err)
 	}
 
 	sout, _ := io.ReadAll(so)
