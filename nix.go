@@ -36,6 +36,11 @@ func RunChecks(repoPath, revision string) (bool, error) {
 
 	sout, _ := io.ReadAll(so)
 	err = cmd.Wait()
+	if cmd.ProcessState.ExitCode == 100 {
+		// nix's code for build failure
+		// https://nix.dev/manual/nix/2.22/command-ref/nix-build
+		return false, nil
+	}
 	if err != nil {
 		fmt.Println(string(sout))
 	}
