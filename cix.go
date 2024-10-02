@@ -42,13 +42,15 @@ type Operation struct {
 	Hash string
 }
 
-func (op Operation) Execute(name string) error {
+func (c Configuration) Execute(op Operation) error {
+	name := c.ResolvedName()
+
 	description := GetDescription(op.Hash, op.Source)
 
 	if op.Source != nil {
 		op.Source.SetStatus(KInProgress, name, "", op.Hash)
 	}
-	ok, err := RunChecks(op.Repo.Path, op.Hash)
+	ok, err := c.RunChecks(op.Repo.Path, op.Hash)
 	if err != nil {
 		if op.Source != nil {
 			op.Source.SetStatus(KError, name, description, op.Hash)
@@ -164,7 +166,7 @@ func (c Configuration) Tick() error {
 	}
 
 	for _, op := range ops {
-		err := op.Execute(c.ResolvedName())
+		err := c.Execute(op)
 		if err != nil {
 			return err
 		}

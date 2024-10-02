@@ -63,8 +63,20 @@ type Configuration struct {
 	// When true we print a lot
 	Verbose bool
 
+	// Path to nix
+	NixPath string
+
 	// various git repos
 	Repositories []RepositoryConfiguration
+}
+
+func (rc Configuration) ResolvedNixPath() string {
+	if rc.NixPath == "" {
+		// hope it is in the path
+		return "nix"
+	}
+
+	return rc.NixPath
 }
 
 func (rc Configuration) ResolvedName() string {
