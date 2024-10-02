@@ -29,6 +29,8 @@ const (
 type RepoSource interface {
 	// True if this is useable (safe against nils)
 	Valid() bool
+
+	// Set the commit status (using the forge's commitstatus api)
 	SetStatus(status CiStatus, comment, description, hash string) error
 
 	// Nix url, used for printing in the status description
