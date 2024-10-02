@@ -31,6 +31,8 @@ type RepoSource interface {
 	Valid() bool
 	SetStatus(status CiStatus, comment, description, hash string) error
 	NixUrl(revision string) string
+
+	// Git url for cloning
 	GitUrl() string
 }
 
