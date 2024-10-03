@@ -63,11 +63,23 @@ type Configuration struct {
 	// When true we print a lot
 	Verbose bool
 
+	// Timeout in seconds for a build
+	Timeout int
+
 	// Path to nix
 	NixPath string
 
 	// various git repos
 	Repositories []RepositoryConfiguration
+}
+
+
+func (rc Configuration) ResolvedTimeout() int {
+	if rc.Timeout == 0 {
+		return 15 * 60
+	}
+
+	return rc.Timeout
 }
 
 func (rc Configuration) ResolvedNixPath() string {

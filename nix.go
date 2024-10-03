@@ -23,7 +23,12 @@ func GetDescription(revision string, src RepoSource) string {
 
 func (c Configuration) RunChecks(repoPath, revision string) (bool, error) {
 	// NB we use our local copy for efficiency, but we need the nix url for returning to the user
-	cmd := exec.Command(c.ResolvedNixPath(), "flake", "check", "-L", "git+file://"+repoPath+"?rev="+revision)
+	cmd := exec.Command(
+		c.ResolvedNixPath(),
+		"flake", "check", "-L",
+		"--timeout", fmt.Sprintf("%v", c.ResolvedTimeout()),
+		"git+file://"+repoPath+"?rev="+revision,
+	)
 	cmd.Dir = "/tmp"
 	so, err := cmd.StderrPipe()
 	if err != nil {

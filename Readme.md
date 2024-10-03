@@ -64,7 +64,6 @@ If you are looking for a fuller featured CI, I urge you to take a look at Hydra.
 - [ ] **Success actions** essentially a `nix run` that is called on succeeding tests. This could be used for deploys
 - [ ] **Non-status notifiers** Discord, email, some shell script. Any of these would be useful
 - [ ] **Binary cache option** Part the reason I don't want to serve artefacts is that Nix can do this through aa binary cache, but a configuration option needs to be passed to the checks for this
-- [ ] **Timeout** Nix sandboxes the build, but it should be timed out as well
 - [ ] **Repository maintenance** GC, prune, etc. Cix works by keeping a local copy of the repository in the var folder specified in the config. Most likely this would need the occasional GC
 - [ ] **Leave logs as a comment** It would be helpful if logs were left as a comment on the commit when tests fail
 - [ ] **Parallel tests** I imagine Cix being used in situations where you want some CPU left spare (e.g. if it runs on your dev machine), but it would be nice to have an option to parallelise and run multiple tests/builds in parallel
@@ -88,6 +87,7 @@ Depending on your needs the following might be useful
 
 - `var` (required) A path to a work folder where cix may store copies of the repositories
 - `name` (optional) A name for this runner, reported in the comment on code forge commit
+- `timeout` (optional) Job timeout in seconds (defaults to 15 mins)
 - `repositories` (required) A list of repositories
     - `branch` (required) The branch to test
     - `github` (optional)
