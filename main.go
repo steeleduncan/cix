@@ -42,12 +42,15 @@ func errMain() error {
 	}
 	c.Var = os.ExpandEnv(c.Var)
 
+	fmt.Println(`Cix ` + version.Version() + ` booting`)
+
 	for {
 		err := c.Tick()
 		if err != nil {
 			fmt.Println("error: ", err)
 		}
 
+		fmt.Println("Sleeping, timeout at ", time.Now().Add(time.Minute * 3))
 		time.Sleep(3 * time.Minute)
 	}
 }
