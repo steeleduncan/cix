@@ -5,6 +5,11 @@
   outputs = { self, nixpkgs }:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      our_revision =
+        if builtins.hasAttr "rev" self then
+          self.rev
+        else
+          "uncommitted";
       
     in rec {
       packages = {
@@ -18,7 +23,7 @@
             buildPhase = ''
               mkdir -p junk
               export HOME=$(pwd)/junk
-              go build -o cix github.com/steeleduncan/cix
+              go build -ldflags "-X github.com/steeleduncan/cix/version.BuildRevision=${our_revision}" -o cix github.com/steeleduncan/cix
             '';
 
             installPhase = ''

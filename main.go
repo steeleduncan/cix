@@ -16,10 +16,12 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/steeleduncan/cix/version"
 )
 
 func usage() error {
-	fmt.Println(`cix <config.json>`)
+	fmt.Println(`cix ` + version.Version() + ` <config.json>`)
 	return nil
 }
 
