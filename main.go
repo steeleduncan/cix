@@ -40,8 +40,6 @@ func errMain() error {
 	}
 	c.Var = os.ExpandEnv(c.Var)
 
-	c.Verbose = true
-
 	for {
 		err := c.Tick()
 		if err != nil {

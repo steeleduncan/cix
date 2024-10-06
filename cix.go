@@ -54,6 +54,7 @@ func (c Configuration) Execute(op Operation) error {
 	name := c.ResolvedName()
 
 	description := GetDescription(op.Hash, op.Source)
+	fmt.Println("Test ", description)
 
 	if op.Source != nil {
 		op.Source.SetStatus(KInProgress, name, "", op.Hash)
@@ -70,12 +71,12 @@ func (c Configuration) Execute(op Operation) error {
 		if op.Source != nil {
 			op.Source.SetStatus(KSucceeded, name, description, op.Hash)
 		}
-		fmt.Println("Passed!")
+		fmt.Println("  Passed!")
 	} else {
 		if op.Source != nil {
 			op.Source.SetStatus(KFailed, name, description, op.Hash)
 		}
-		fmt.Println("Failed!")
+		fmt.Println("  Failed!")
 	}
 
 	return nil
