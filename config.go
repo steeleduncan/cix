@@ -66,6 +66,9 @@ type Configuration struct {
 	// Timeout in seconds for a build
 	Timeout int
 
+	// Polling interval
+	PollingInterval int
+
 	// Path to nix
 	NixPath string
 
@@ -73,6 +76,13 @@ type Configuration struct {
 	Repositories []RepositoryConfiguration
 }
 
+func (rc Configuration) ResolvedPollingInterval() int {
+	if rc.PollingInterval == 0 {
+		return 180
+	}
+
+	return rc.PollingInterval
+}
 
 func (rc Configuration) ResolvedTimeout() int {
 	if rc.Timeout == 0 {

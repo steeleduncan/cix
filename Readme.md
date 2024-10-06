@@ -88,6 +88,7 @@ Depending on your needs the following might be useful
 - `var` (required) A path to a work folder where cix may store copies of the repositories
 - `name` (optional) A name for this runner, reported in the comment on code forge commit
 - `timeout` (optional) Job timeout in seconds (defaults to 15 mins)
+- `pollinginterval` (optional) Polling interval in seconds (defaults to 180s)
 - `repositories` (required) A list of repositories
     - `branch` (required) The branch to test
     - `github` (optional)
