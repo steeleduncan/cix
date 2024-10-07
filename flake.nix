@@ -1,10 +1,12 @@
 {
   description = "Cix: minimal nix ci";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+  inputs.utils.url = "github:numtide/flake-utils";
   
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, utils }:
+    utils.lib.eachDefaultSystem (system:
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      pkgs = nixpkgs.legacyPackages.${system};
       our_revision =
         if builtins.hasAttr "rev" self then
           self.rev
@@ -13,7 +15,7 @@
       
     in rec {
       packages = {
-        x86_64-linux.default =
+        default =
           pkgs.stdenv.mkDerivation {
             name = "cix";
             buildInputs = [
@@ -33,6 +35,6 @@
           };
       };
       checks = packages;
-    };
+    });
 }
 
