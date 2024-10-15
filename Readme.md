@@ -3,16 +3,17 @@
 # Cix - A minimal CI for Nix
 
 Cix is a minimal, but useful, CI for use with Nix.
-It watches repositories, runs any tests and builds listed in `nix flake check`, and reports the status back to your code forge (e.g. Github or Bitbucket).
+It watches repositories, runs any tests or builds in `nix flake check`, and reports the status back to your code forge (e.g. Github or Bitbucket), which is usually shown as a tick against the commit.
 
-Cix is not designed to be the best, or the most featureful, Nix CI.
-It is designed to be the smallest and easiest to setup, while still being useful, something you can run in the background and see the status of each commit in Github/Bitbucket.
-With one static binary, and one JSON configuration file, it will run tests for all commits you push, and report a status back, which show as a green tick or red cross against the commit.
+Nix already contains almost anything you need for a useful CI (isolation, artefact storage, dependency management, reproducibility, ...) and the philosophy of Cix is to add as little as possible to Nix to make it useful.
+There are many Nix CIs out there that do more than Cix, but none I know of that do less.
+
+A benefit of this minimal approach is that with one static binary, and one JSON configuration file, Cix is very simple to setup.
 
 A lot of simplicity is found by not storing logs and artefacts, or serving them through a web interface.
 Cix relies on Nix's reproducibility instead, you can always rerun the full test command to see the results with perfect reproducibility.
 For this reason the command is included in the status line on your code forge, if you see a red cross you can run it locally and see the problem.
-If you share a binary cache with the runner, you will share its results without needing to calculate them, so this be efficient.
+If you share a binary cache with the runner, you will share its results without needing to calculate them, making this efficient.
 
 It is early days for Cix, but if you wish to try it, create a `config.json` similar to the following and run `nix run github:steeleduncan/cix -- config.json`
 
@@ -36,7 +37,7 @@ The `statuspat` is technically optional, but the commit tick in Github/Bitbucket
 See below for the Bitbucket equivalent, and details of what permissions to allow on the token.
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
-It is also designed so that Cix doesn't need to run continuously, if it is running your laptop when it goes to sleep, it will pull and run tests again on wake.
+Cix is designed so that it doesn't need to run continuously, if it is running your laptop when it goes to sleep, it will pull and run tests again on wake.
 
 Cix was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simple-ci)
 
