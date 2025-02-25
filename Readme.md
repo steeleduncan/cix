@@ -33,8 +33,8 @@ It is early days for Cix, but if you wish to try it, create a `config.json` simi
 }
 ```
 
-The `statuspat` is technically optional, but the commit tick in Github/Bitbucket is currently the only way to view results.
-See below for the Bitbucket equivalent, and details of what permissions to allow on the token.
+The `statuspat` is technically optional, but the commit tick in Github/Bitbucket/Forgejo is currently the only way to view results.
+See below for the Bitbucket/Forgejo equivalent, and details of what permissions to allow on the token.
 
 Cix will use git to pull the repositories over SSH, using whatever permissions are available in that context.
 Cix is designed so that it doesn't need to run continuously, if it is running your laptop when it goes to sleep, it will pull and run tests again on wake.
@@ -45,7 +45,7 @@ Cix was inspired by [nix-simple-ci](https://github.com/ElvishJerricco/nix-simple
 
 - **Watches repositories**
 - **Runs tests** with `nix flake check`
-- **Pushes a commit status to Github//Bitbucket** so you can see if the tests are running, passed or failed
+- **Pushes a commit status to Github//Bitbucket/Forgejo** so you can see if the tests are running, passed or failed
 - **Catches up** Cix doesn't need to be online when the commit is made, so if you only have your machine on part the time, when it first checks it will enumerate and test all commits made since it was last on
 
 Cix will run tests for every commit, not just the latest commit pushed.
@@ -102,10 +102,16 @@ Depending on your needs the following might be useful
         - `workspace` (required) The Bitbucket workspace name
         - `repository` (required) The Bitbucket repository slug
         - `token` (optional) An Access Token with write permission for the repository
+    - `forgejo` (optional)
+        - `domain` (required) Domain of the Forgejo instance.
+        - `user` (required) The Forgejo user name
+        - `repository` (required) Repository name for that users account
+        - `token` (optional) An Access Token with write permission for `repository`
+        - `ssh` (optional) Whether to use ssh or https to clone the repository
     - `ssh` (optional)
         - `remote` (required) An ssh git url to pull commits from
 
-Although `github`, `bitbucket`, `ssh` fields are all optional, you must have at least one per repository specified.
+Although `github`, `bitbucket`, `forgejo`, `ssh` fields are all optional, you must have at least one per repository specified.
 If more than one is specified the outcome is undefined.
 
 ## Licence

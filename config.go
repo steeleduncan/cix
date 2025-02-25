@@ -26,6 +26,9 @@ type RepositoryConfiguration struct {
 	// (optional) Ssh config block
 	Ssh *SshConfiguration
 
+	// (optional) Forgejo config block
+	Forgejo *ForgejoConfiguration
+
 	// The branch to check
 	Branch string
 }
@@ -41,6 +44,10 @@ func (rc RepositoryConfiguration) Source() RepoSource {
 
 	if rc.Ssh.Valid() {
 		return rc.Ssh
+	}
+
+	if rc.Forgejo.Valid() {
+		return rc.Forgejo
 	}
 
 	return nil
