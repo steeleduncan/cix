@@ -107,7 +107,7 @@ Depending on your needs the following might be useful
         - `user` (required) The Forgejo user name
         - `repository` (required) Repository name for that users account
         - `token` (optional) An Access Token with write permission for `repository`
-        - `ssh` (optional) Wether to use ssh or https to clone the repository
+        - `ssh` (optional) Whether to use ssh or https to clone the repository
     - `ssh` (optional)
         - `remote` (required) An ssh git url to pull commits from
 
